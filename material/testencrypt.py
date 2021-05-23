@@ -4,12 +4,14 @@ from Crypto.Random import get_random_bytes
 # key AES 256 bits
 key = get_random_bytes(32)
 
+file = 'text.txt'
+
 # save AES key
 with open('AESkey', 'wb') as f:
     f.write(key)
 
 # open file text
-with open('text.txt', 'r') as f:
+with open(file, 'r') as f:
     fp = f.read()
 
 
