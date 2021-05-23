@@ -1,5 +1,5 @@
 # Cyber_AES
-            Encryption            &amp;                 Decryption
+            Encryption            &                    Decryption
 
        TEXT + AES Key                         Digital Signature + Public Key        AES Encrypt File--------------+
             |                                               |                               |                     |
