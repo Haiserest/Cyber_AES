@@ -1,0 +1,14 @@
+Tutorial Encrypt & Decrypt Picture
+
+1. Generate AES and RSA key and will get file "../AES"
+	AES :	AESkey
+
+2. Encrypt : Browse Your Picture file (.png) which you want to encrypt 
+	     Browse AESkey to encrypt 
+  	     click Submit to Encrypt file and programe will generate file 
+	     "Picture_encrypt" - file encrypt with AES key
+	     
+3. Decrypt : Browse Your file encrypt from AES key to decrypt
+	     Browse AESkey to decrypt
+	     click Submit to Decrypt file if correct it will generate file
+	     "Picture_decrypt.png" - file picture(.png) decrypt with AES key [plaintext]	

@@ -1,0 +1,18 @@
+Tutorial Encrypt & Decrypt Text
+
+1. Generate AES and RSA key and will get file "../AES" and "../RSA"
+	AES :	AESkey
+	RSA :	Private_Key.pem
+		Public_Key.pem
+
+2. Encrypt : Browse Your text file (.txt) which you want to encrypt 
+	     Browse AESkey and Private_Key.pem to encrypt 
+  	     click Submit to Encrypt file and programe will generate file 
+	     "AES_encrypt.txt" - file text(.txt) encrypt with AES key
+	     "hash" - file AES_encrypt.txt hashing with SHA512
+	     "digital_signature" - file hash sign with Private key to be Digital Signature
+
+3. Decrypt : Browse Your text encrypt from AES key to decrypt
+	     Browse AESkey, Public_Key.pem and digital_signature to verify and decrypt
+	     click Submit to Decrypt and verify file if correct it will generate file
+	     "AES_decrypt.txt" - file text(.txt) decrypt with AES key [plaintext]	
