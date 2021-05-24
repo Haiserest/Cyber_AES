@@ -531,11 +531,6 @@ logo = tkinter.PhotoImage(file = "material/temp/icon_logo_small.png")
 logo_label = tkinter.Label(Application, image=logo)
 logo_label.grid(row=0, column=1)
 
-# # resize picture 
-# image = Image.open('material/temp/.png')
-# new_image = image.resize((80, 80))
-# new_image.save('material/temp/_small.png')
-
 info = tkinter.Label(Application, text='" Select Mode You Want to Encrypt & Decrypt "', font="Raleway")
 info.grid(columnspan=3, column=0, row=2)
 
