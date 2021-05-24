@@ -20,32 +20,32 @@ def generateAESkey():
         f.write(key)
         f.close()
 
-def encrypt_textfile(file, key):
-    print("\nencrypt_textfile_function")
-    # open file txt
-    with open(file, 'r') as f:
-        fp = f.read()
-        print("text: ",fp)
+# def encrypt_textfile(file, key):
+#     print("\nencrypt_textfile_function")
+#     # open file txt
+#     with open(file, 'r') as f:
+#         fp = f.read()
+#         print("text: ",fp)
 
-    # open file AES key
-    with open(key, 'rb') as f:
-        k = f.read()
+#     # open file AES key
+#     with open(key, 'rb') as f:
+#         k = f.read()
 
-    # get AES key to encrypt text
-    cipher = AES.new(k, AES.MODE_EAX)
-    iv = cipher.nonce
-    ciphertext, tag = cipher.encrypt_and_digest(fp.encode('UTF-8'))
+#     # get AES key to encrypt text
+#     cipher = AES.new(k, AES.MODE_EAX)
+#     iv = cipher.nonce
+#     ciphertext, tag = cipher.encrypt_and_digest(fp.encode('UTF-8'))
 
-    print("iv : ", iv)
-    print("ciphertext : ",ciphertext)
+#     print("iv : ", iv)
+#     print("ciphertext : ",ciphertext)
 
-    # len iv = 16 | tag = 16
-    ciphertext = iv + tag + ciphertext
-    print("ciphertext_encrypt : ",ciphertext)
+#     # len iv = 16 | tag = 16
+#     ciphertext = iv + tag + ciphertext
+#     print("ciphertext_encrypt : ",ciphertext)
 
-    # save file text encrypt
-    with open('AES_encrypt.txt', 'wb') as f:
-        f.write(ciphertext)
+#     # save file text encrypt
+#     with open('AES_encrypt.txt', 'wb') as f:
+#         f.write(ciphertext)
 
 def decrypt_textfile(file, key):
     print("\ndecrypt_textfile_function")
@@ -133,29 +133,29 @@ def generateRSAkey():
         f.write(Public_Key)
         f.close()
 
-def encrypt_signature(pvt_key, file):
-    print("\nencrypt_signature_function")
-    #get private Key from file
-    private_key = RSA.import_key(open(pvt_key).read())
+# def encrypt_signature(pvt_key, file):
+#     print("\nencrypt_signature_function")
+#     #get private Key from file
+#     private_key = RSA.import_key(open(pvt_key).read())
 
-    with open(file, 'rb') as f:
-        msg = f.read()
-    # hash 512
-    digest = SHA512.new()
-    digest.update(msg)
+#     with open(file, 'rb') as f:
+#         msg = f.read()
+#     # hash 512
+#     digest = SHA512.new()
+#     digest.update(msg)
 
-    with open('hash', 'wb') as f:
-        f.write(digest.digest())
+#     with open('hash', 'wb') as f:
+#         f.write(digest.digest())
 
-    # sign with private key
-    signer = PKCS1_v1_5.new(private_key)
-    sig = signer.sign(digest) 
+#     # sign with private key
+#     signer = PKCS1_v1_5.new(private_key)
+#     sig = signer.sign(digest) 
 
-    print("Signature : " ,sig)
+#     print("Signature : " ,sig)
 
-    with open('digital_signature', 'wb') as f:
-        f.write(sig)
-        f.close
+#     with open('digital_signature', 'wb') as f:
+#         f.write(sig)
+#         f.close
 
 def decrypt_signature(pub_key, file, ds, AES_key):
     print("\ndecrypt_signature_function")
@@ -182,6 +182,59 @@ def decrypt_signature(pub_key, file, ds, AES_key):
     if (verify):
         decrypt_textfile(file, AES_key)
 
+def encrypt_textfile(file, key, pvt_key):
+
+    # AES_encrypt part
+    print("\nencrypt_textfile_function")
+
+    # open file txt
+    with open(file, 'r') as f:
+        fp = f.read()
+        print("text: ",fp)
+
+    # open file AES key
+    with open(key, 'rb') as f:
+        k = f.read()
+
+    # get AES key to encrypt text
+    cipher = AES.new(k, AES.MODE_EAX)
+    iv = cipher.nonce
+    ciphertext, tag = cipher.encrypt_and_digest(fp.encode('UTF-8'))
+
+    print("iv : ", iv)
+    print("ciphertext : ",ciphertext)
+
+    # len iv = 16 | tag = 16
+    ciphertext = iv + tag + ciphertext
+    print("ciphertext_encrypt : ",ciphertext)
+
+    # save file text encrypt
+    with open('AES_encrypt.txt', 'wb') as f:
+        f.write(ciphertext)
+
+    # Digital_Signal Part
+    print("\nencrypt_signature_function")
+
+    #get private Key from file
+    private_key = RSA.import_key(open(pvt_key).read())
+
+    # hash 512
+    digest = SHA512.new()
+    digest.update(ciphertext)
+
+    with open('hash', 'wb') as f:
+        f.write(digest.digest())
+
+    # sign with private key
+    signer = PKCS1_v1_5.new(private_key)
+    sig = signer.sign(digest) 
+
+    print("Signature : " ,sig)
+
+    with open('digital_signature', 'wb') as f:
+        f.write(sig)
+        f.close
+
 #=======================================================================================
 
 # generatekey AES 256 bits
@@ -191,23 +244,24 @@ generateAESkey()
 generateRSAkey()
 
 filetext = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/material/text.txt"
-AES_encrypt = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
-encrypt_textfile(filetext, AES_encrypt)
-
-Picturefile = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/material/pic.png"
-AES_pic1 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
-encrypt_picture(Picturefile, AES_pic1)
-
-Picture_encrypt = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/Picture_encrypt"
-AES_pic2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
-decrypt_picture(Picture_encrypt, AES_pic2)
-
-file_AES1 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES_encrypt.txt"
+AES_key1 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
 pvt_key = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/RSA/Private_Key.pem"
-encrypt_signature(pvt_key, file_AES1)
+encrypt_textfile(filetext, AES_key1, pvt_key)
+
+# Picturefile = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/material/pic.png"
+# AES_pic1 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
+# encrypt_picture(Picturefile, AES_pic1)
+
+# Picture_encrypt = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/Picture_encrypt"
+# AES_pic2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
+# decrypt_picture(Picture_encrypt, AES_pic2)
+
+# file_AES1 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES_encrypt.txt"
+# pvt_key = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/RSA/Private_Key.pem"
+# encrypt_signature(pvt_key, file_AES1)
 
 file_AES2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES_encrypt.txt"
 pub_key = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/RSA/Public_Key.pem"
 ds = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/digital_signature"
-AES_key = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
-decrypt_signature(pub_key, file_AES2, ds, AES_key)
+AES_key2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
+decrypt_signature(pub_key, file_AES2, ds, AES_key2)
