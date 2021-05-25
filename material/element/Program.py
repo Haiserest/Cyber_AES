@@ -6,7 +6,7 @@ from Crypto.Hash import SHA512
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad
 from Crypto.Util.Padding import unpad
-
+import hashlib as hl
 #=======================================================================================
 
 def generateAESkey():
@@ -264,4 +264,4 @@ file_AES2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES_encrypt.txt"
 pub_key = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/RSA/Public_Key.pem"
 ds = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/digital_signature"
 AES_key2 = "C:/Users/asus/Documents/Cyber/Project/Cyber_AES/AES/AESkey"
-decrypt_signature(pub_key, file_AES2, ds, AES_key2)
+# decrypt_signature(pub_key, file_AES2, ds, AES_key2)
