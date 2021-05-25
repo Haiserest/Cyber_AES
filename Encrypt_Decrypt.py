@@ -1,7 +1,8 @@
 import tkinter
-from tkinter import Toplevel, filedialog
+from tkinter import Toplevel, filedialog, messagebox
 from tkinter import *
 import os
+import hashlib as hl
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
 from Crypto.Signature import PKCS1_v1_5
@@ -22,6 +23,7 @@ def generateAESkey():
     with open(fileAES, 'wb') as f:
         f.write(key)
         f.close()
+        alert(1)
 
 def generateRSAkey():
     # generate key 2048 bits
@@ -41,6 +43,7 @@ def generateRSAkey():
     with open(Public_key_file, 'wb') as f:
         f.write(Public_Key)
         f.close()
+        alert(1)
 
 def encrypt_textfile(file, key, pvt_key):
 
@@ -100,6 +103,7 @@ def encrypt_textfile(file, key, pvt_key):
     with open(filegenerate, 'wb') as f:
         f.write(sig)
         f.close
+        alert(1)
 
 def decrypt_textfile(file, key):
     print("\ndecrypt_textfile_function")
@@ -123,6 +127,7 @@ def decrypt_textfile(file, key):
     os.makedirs(os.path.dirname(filegenerate), exist_ok=True)
     with open(filegenerate, 'w') as f:
         f.write(plaintext)
+        alert(1)
 
 def decrypt_signature(pub_key, file, ds, AES_key):
 
@@ -149,6 +154,7 @@ def decrypt_signature(pub_key, file, ds, AES_key):
 
     if (verify):
         decrypt_textfile(file, AES_key)
+        alert(2)
  
 def encrypt_picture(file, key):
     print("\nencrypt_Picture_function")
@@ -174,6 +180,7 @@ def encrypt_picture(file, key):
     with open(filegenerate, 'wb') as f:
         f.write(cipher.iv)
         f.write(data)
+        alert(1)
 
 def decrypt_picture(file, key):
     print("\ndecrypt_picture_function")
@@ -199,8 +206,28 @@ def decrypt_picture(file, key):
     os.makedirs(os.path.dirname(filegenerate), exist_ok=True)
     with open(filegenerate, 'wb') as f:
         f.write(plaintext)
+        alert(1)
 
 # =====================      UI           ============================================
+
+def alert(num):
+    if(num == 1):
+        print("Success!!")
+        messagebox.showinfo("Success!!")
+        
+    elif(num == 2):
+        print("Verify : True")
+        messagebox.showinfo("Verify : True")
+
+def cachehash(filec):
+    
+    with open(filec, 'r') as f:
+        pth = f.read()
+    pth = str(pth)
+    hashing = hl.sha256(pth.encode()).hexdigest()
+
+    with open(filec, 'w')as f:
+        f.write(hashing)
 
 def set_path(entry_field,num):
     path = filedialog.askopenfilename(initialdir = "C:")
@@ -280,14 +307,17 @@ def text_encrypt_func():
     filedircache = "material/cache/cache_txt"
     with open(filedircache, 'r') as f:
         filetext = f.read()
+        cachehash(filedircache)
 
     filedircache = "material/cache/cache_A_encrypt"
     with open(filedircache, 'r') as f:
         AES_keyencrypt = f.read()
+        cachehash(filedircache)
     
     filedircache = "material/cache/cache_Pvt"
     with open(filedircache, 'r')as f:
         pvt_key = f.read()
+        cachehash(filedircache)
 
     print("filetext: ",filetext)
     print("AES_keyencrypt: ",AES_keyencrypt)
@@ -299,18 +329,22 @@ def text_decrypt_func():
     filedircache = "material/cache/cache_T_encrypt"
     with open(filedircache, 'r')as f:
         filetext = f.read()
+        cachehash(filedircache)
     
     filedircache = "material/cache/cache_Pub"
     with open(filedircache, 'r')as f:
         pub = f.read()
+        cachehash(filedircache)
     
     filedircache = "material/cache/cache_DS"
     with open(filedircache, 'r')as f:
         ds = f.read()
+        cachehash(filedircache)
 
     filedircache = "material/cache/cache_A_key"
     with open(filedircache, 'r')as f:
         AES_keyencrypt = f.read()
+        cachehash(filedircache)
 
     print("AES_encrypt: ",filetext)
     print("AES_keyencrypt: ",AES_keyencrypt)
@@ -449,10 +483,12 @@ def picture_encrypt_func():
     filedircache = "material/cache/cache_P_encrypt"
     with open(filedircache, 'r')as f:
         Picturefile = f.read()
+        cachehash(filedircache)
     
     filedircache = "material/cache/cache_APE"
     with open(filedircache, 'r')as f:
         AES_pic1 = f.read()
+        cachehash(filedircache)
 
     print("Picture_path : ",Picturefile)
     print("AES key: ",AES_pic1)
@@ -464,10 +500,12 @@ def picture_decrypt_func():
     filedircache = "material/cache/cache_P_decrypt"
     with open(filedircache, 'r')as f:
         Picture_encrypt = f.read()
+        cachehash(filedircache)
     
     filedircache = "material/cache/cache_APD"
     with open(filedircache, 'r')as f:
         AES_pic2 = f.read()
+        cachehash(filedircache)
 
     print("Picture_encrypt_path : ",Picture_encrypt)
     print("AES key: ",AES_pic2)
@@ -533,7 +571,7 @@ def decryptPicture():
 
 def modePicturefile():
     Picture_window = Toplevel(Application)
-    Picture_window.minsize(width=400, height=400)
+    Picture_window.minsize(width=500, height=300)
     Picture_window.title("Encrypt & Decrypt Picture")
     Picture_window.columnconfigure([0,1],minsize=250)
     Picture_window.rowconfigure([0,1,2], minsize=100)
