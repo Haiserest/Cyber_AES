@@ -98,7 +98,7 @@ def encrypt_textfile(file, key, pvt_key):
 
     print("Signature : " ,sig)
 
-    filegenerate = "File_Generate/Encrypt/Text/digital_signature"
+    filegenerate = "File_Generate/Encrypt/Text/digital_signature.txt"
     os.makedirs(os.path.dirname(filegenerate), exist_ok=True)
     with open(filegenerate, 'wb') as f:
         f.write(sig)
@@ -213,11 +213,11 @@ def decrypt_picture(file, key):
 def alert(num):
     if(num == 1):
         print("Success!!")
-        messagebox.showinfo("Success!!")
+        messagebox.showinfo(title="Success!!", message="Success!!")
         
     elif(num == 2):
         print("Verify : True")
-        messagebox.showinfo("Verify : True")
+        messagebox.showinfo(title="Verify", message="Verify : True")
 
 def cachehash(filec):
     
